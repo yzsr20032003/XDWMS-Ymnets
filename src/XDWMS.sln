@@ -3,35 +3,35 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Web", "src\Apps.Web\Apps.Web.csproj", "{C6722598-ED56-408B-81AA-D3634159008D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Web", "Apps.Web\Apps.Web.csproj", "{C6722598-ED56-408B-81AA-D3634159008D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Models", "src\Apps.Models\Apps.Models.csproj", "{54F6CD9E-178F-4240-8A67-33E79CB5F2C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Models", "Apps.Models\Apps.Models.csproj", "{54F6CD9E-178F-4240-8A67-33E79CB5F2C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Common", "src\Apps.Common\Apps.Common.csproj", "{6847A12A-20B8-4902-A688-2866C716A1EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Common", "Apps.Common\Apps.Common.csproj", "{6847A12A-20B8-4902-A688-2866C716A1EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.BLL", "src\Apps.BLL\Apps.BLL.csproj", "{E4E6F8B0-636A-44E7-BEDB-1AC222CE47F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.BLL", "Apps.BLL\Apps.BLL.csproj", "{E4E6F8B0-636A-44E7-BEDB-1AC222CE47F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.IBLL", "src\Apps.IBLL\Apps.IBLL.csproj", "{D6C8A784-EC1D-4191-B7DF-EF0F46CADFC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.IBLL", "Apps.IBLL\Apps.IBLL.csproj", "{D6C8A784-EC1D-4191-B7DF-EF0F46CADFC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.IDAL", "src\Apps.IDAL\Apps.IDAL.csproj", "{C713A4E3-BCC9-4C72-BA67-8323632D8AA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.IDAL", "Apps.IDAL\Apps.IDAL.csproj", "{C713A4E3-BCC9-4C72-BA67-8323632D8AA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.DAL", "src\Apps.DAL\Apps.DAL.csproj", "{920CF227-4A18-44D2-A54A-38C88646D070}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.DAL", "Apps.DAL\Apps.DAL.csproj", "{920CF227-4A18-44D2-A54A-38C88646D070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Core", "src\Apps.Core\Apps.Core.csproj", "{15C278DB-A77D-43A2-A5BC-B26F49B3977D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Core", "Apps.Core\Apps.Core.csproj", "{15C278DB-A77D-43A2-A5BC-B26F49B3977D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Locale", "src\Apps.Locale\Apps.Locale.csproj", "{A670269B-B46C-4C77-BE86-4BE2D26CD126}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Locale", "Apps.Locale\Apps.Locale.csproj", "{A670269B-B46C-4C77-BE86-4BE2D26CD126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Jobs", "src\Apps.Jobs\Apps.Jobs.csproj", "{6BE9CED4-24D9-48AF-AF4A-8DD380D7DFA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Jobs", "Apps.Jobs\Apps.Jobs.csproj", "{6BE9CED4-24D9-48AF-AF4A-8DD380D7DFA1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps.Base", "src\Apps.Base", "{5887A95D-93D1-4CF2-BF3D-5C6CA6549D58}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps.Base", "Apps.Base", "{5887A95D-93D1-4CF2-BF3D-5C6CA6549D58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.CodeHelper", "src\Apps.CodeHelper\Apps.CodeHelper.csproj", "{31FF69BF-0DCF-4D86-95AC-4B94B84DECD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.CodeHelper", "Apps.CodeHelper\Apps.CodeHelper.csproj", "{31FF69BF-0DCF-4D86-95AC-4B94B84DECD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.EncryptHelper", "src\Apps.EncryptHelper\Apps.EncryptHelper.csproj", "{997950C8-E2EC-498B-A26B-D650514EB34A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.EncryptHelper", "Apps.EncryptHelper\Apps.EncryptHelper.csproj", "{997950C8-E2EC-498B-A26B-D650514EB34A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.WebApi", "src\Apps.WebApi\Apps.WebApi.csproj", "{D5F0F984-6DA6-4B08-A27D-D1F0C4133A95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.WebApi", "Apps.WebApi\Apps.WebApi.csproj", "{D5F0F984-6DA6-4B08-A27D-D1F0C4133A95}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps.Helper", "src\Apps.Helper", "{2DA6F18D-1E0B-4170-8E0D-46DD23ADE7AC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps.Helper", "Apps.Helper", "{2DA6F18D-1E0B-4170-8E0D-46DD23ADE7AC}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

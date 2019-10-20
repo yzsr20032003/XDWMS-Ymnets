@@ -5,6 +5,51 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DB.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EMS_DeviceArea">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMS_DeviceDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AreaId" Type="int" Nullable="false" />
+          <Property Name="ParentID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Model" Type="nvarchar" MaxLength="50" />
+          <Property Name="OEM" Type="nvarchar" MaxLength="100" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="50" />
+          <Property Name="locking" Type="bit" Nullable="false" />
+          <Property Name="CreateUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMS_DeviceState">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMS_DeviceType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Flow_External">
           <Key>
             <PropertyRef Name="Id" />
@@ -882,8 +927,8 @@
           <Property Name="IsReportCalendar" Type="bit" Nullable="false" />
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“AppsDB_Spl.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -989,6 +1034,18 @@
           <Property Name="Subscribe" Type="int" Nullable="false" />
           <Property Name="OfficalAccountId" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_EMS_DeviceArea">
+          <End Role="EMS_DeviceArea" Type="Self.EMS_DeviceArea" Multiplicity="1" />
+          <End Role="EMS_DeviceDetails" Type="Self.EMS_DeviceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMS_DeviceArea">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMS_DeviceDetails">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Flow_Form_Flow_Type">
           <End Role="Flow_Type" Type="Self.Flow_Type" Multiplicity="1" />
           <End Role="Flow_Form" Type="Self.Flow_Form" Multiplicity="*" />
@@ -1510,7 +1567,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Spl_WarehouseWarrantDetails_Spl_WarehouseWarrant">
-          <End Role="Spl_WarehouseWarrant" Type="Self.Spl_WarehouseWarrant" Multiplicity="1" />
+          <End Role="Spl_WarehouseWarrant" Type="Self.Spl_WarehouseWarrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Spl_WarehouseWarrantDetails" Type="Self.Spl_WarehouseWarrantDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Spl_WarehouseWarrant">
@@ -1548,7 +1607,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Spl_WarehouseWarrantDetailsOUT_Spl_WarehouseWarrantOUT">
-          <End Role="Spl_WarehouseWarrantOUT" Type="Self.Spl_WarehouseWarrantOUT" Multiplicity="1" />
+          <End Role="Spl_WarehouseWarrantOUT" Type="Self.Spl_WarehouseWarrantOUT" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Spl_WarehouseWarrantDetailsOUT" Type="Self.Spl_WarehouseWarrantDetailsOUT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Spl_WarehouseWarrantOUT">
@@ -2103,6 +2164,10 @@
           <Parameter Name="UserId" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="DBStoreContainer">
+          <EntitySet Name="EMS_DeviceArea" EntityType="Self.EMS_DeviceArea" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMS_DeviceDetails" EntityType="Self.EMS_DeviceDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMS_DeviceState" EntityType="Self.EMS_DeviceState" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMS_DeviceType" EntityType="Self.EMS_DeviceType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flow_External" EntityType="Self.Flow_External" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flow_Form" EntityType="Self.Flow_Form" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flow_FormAttr" EntityType="Self.Flow_FormAttr" Schema="dbo" store:Type="Tables" />
@@ -2178,6 +2243,10 @@
     [SysUserConfig].[UserId] AS [UserId]
     FROM [dbo].[SysUserConfig] AS [SysUserConfig]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_EMS_DeviceArea" Association="Self.FK_EMS_DeviceArea">
+            <End Role="EMS_DeviceArea" EntitySet="EMS_DeviceArea" />
+            <End Role="EMS_DeviceDetails" EntitySet="EMS_DeviceDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Flow_Form_Flow_Type" Association="Self.FK_Flow_Form_Flow_Type">
             <End Role="Flow_Type" EntitySet="Flow_Type" />
             <End Role="Flow_Form" EntitySet="Flow_Form" />
@@ -3007,6 +3076,14 @@
           <AssociationSet Name="SysRoleSpl_Warehouse" Association="DB.SysRoleSpl_Warehouse">
             <End Role="Spl_Warehouse" EntitySet="Spl_Warehouse" />
             <End Role="SysRole" EntitySet="SysRole" />
+          </AssociationSet>
+          <EntitySet Name="EMS_DeviceArea" EntityType="DB.EMS_DeviceArea" />
+          <EntitySet Name="EMS_DeviceDetails" EntityType="DB.EMS_DeviceDetails" />
+          <EntitySet Name="EMS_DeviceState" EntityType="DB.EMS_DeviceState" />
+          <EntitySet Name="EMS_DeviceType" EntityType="DB.EMS_DeviceType" />
+          <AssociationSet Name="FK_EMS_DeviceArea" Association="DB.FK_EMS_DeviceArea">
+            <End Role="EMS_DeviceArea" EntitySet="EMS_DeviceArea" />
+            <End Role="EMS_DeviceDetails" EntitySet="EMS_DeviceDetails" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
@@ -5268,6 +5345,65 @@
           <End Type="DB.Spl_Warehouse" Role="Spl_Warehouse" Multiplicity="*" />
           <End Type="DB.SysRole" Role="SysRole" Multiplicity="*" />
         </Association>
+        <EntityType Name="EMS_DeviceArea">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="EMS_DeviceDetails" Relationship="DB.FK_EMS_DeviceArea" FromRole="EMS_DeviceArea" ToRole="EMS_DeviceDetails" />
+        </EntityType>
+        <EntityType Name="EMS_DeviceDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AreaId" Type="Int32" Nullable="false" />
+          <Property Name="ParentID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OEM" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="locking" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="EMS_DeviceArea" Relationship="DB.FK_EMS_DeviceArea" FromRole="EMS_DeviceDetails" ToRole="EMS_DeviceArea" />
+        </EntityType>
+        <EntityType Name="EMS_DeviceState">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="EMS_DeviceType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_EMS_DeviceArea">
+          <End Type="DB.EMS_DeviceArea" Role="EMS_DeviceArea" Multiplicity="1" />
+          <End Type="DB.EMS_DeviceDetails" Role="EMS_DeviceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMS_DeviceArea">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMS_DeviceDetails">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6590,6 +6726,55 @@
               <ScalarProperty Name="Id" ColumnName="Spl_WarehouseId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="EMS_DeviceArea">
+            <EntityTypeMapping TypeName="DB.EMS_DeviceArea">
+              <MappingFragment StoreEntitySet="EMS_DeviceArea">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMS_DeviceDetails">
+            <EntityTypeMapping TypeName="DB.EMS_DeviceDetails">
+              <MappingFragment StoreEntitySet="EMS_DeviceDetails">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="locking" ColumnName="locking" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OEM" ColumnName="OEM" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMS_DeviceState">
+            <EntityTypeMapping TypeName="DB.EMS_DeviceState">
+              <MappingFragment StoreEntitySet="EMS_DeviceState">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMS_DeviceType">
+            <EntityTypeMapping TypeName="DB.EMS_DeviceType">
+              <MappingFragment StoreEntitySet="EMS_DeviceType">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

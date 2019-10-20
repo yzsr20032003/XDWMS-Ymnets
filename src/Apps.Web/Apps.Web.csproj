@@ -253,6 +253,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Demo\Models\" />
     <Folder Include="Areas\Demo\Views\Shared\" />
+    <Folder Include="Areas\EMS\Models\" />
     <Folder Include="Areas\Flow\Views\External\" />
     <Folder Include="Areas\Flow\Views\Models\" />
     <Folder Include="Areas\Flow\Views\Monitor\" />
@@ -274,6 +275,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\EMS\Controllers\DeviceStateController.cs" />
+    <Compile Include="Areas\EMS\EMSAreaRegistration.cs" />
     <Compile Include="Areas\Demo\Controllers\BaseDemoController.cs" />
     <Compile Include="Areas\Demo\DemoAreaRegistration.cs" />
     <Compile Include="Areas\Flow\Controllers\ApplyController.cs" />
@@ -713,6 +716,10 @@
     <Content Include="Areas\Spl\Views\WareStockPile\Index.cshtml" />
     <Content Include="Areas\Spl\Views\WareStockPile\Watch.cshtml" />
     <Content Include="Areas\Spl\Views\WareStockReport\Index.cshtml" />
+    <Content Include="Areas\EMS\Views\web.config" />
+    <Content Include="Areas\EMS\Views\DeviceState\Create.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceState\Edit.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceState\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1192,7 +1199,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>37281</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

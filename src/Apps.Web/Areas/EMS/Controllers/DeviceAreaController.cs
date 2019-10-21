@@ -7,11 +7,13 @@ using System.Web.Mvc;
 using Apps.Common;
 using Apps.IBLL;
 using Apps.Models.EMS;
+using Apps.Models.Sys;
 using Unity.Attributes;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
 using System.Data;
+using System.Text;
 
 namespace Apps.Web.Areas.EMS.Controllers
 {
@@ -44,6 +46,37 @@ namespace Apps.Web.Areas.EMS.Controllers
                        };
             return Json(json);
         }
+
+        public JsonResult GetListByComTree(string id)
+        {
+            List<EMS_DeviceAreaModel> list = m_BLL.GetList(id);
+            var json = from r in list
+                       select new SysTreeModel()
+                       {
+                           id = r.Id,
+                           text = r.Name,
+                           state = (m_BLL.GetList(r.Id).Count > 0) ? "closed" : "open"
+                       };
+
+
+            return Json(json);
+        }
+
+        [HttpPost]
+        public JsonResult GetListByParentId(string id)
+        {
+            if (id == null)
+                id = "0";
+            List<EMS_DeviceAreaModel> list = m_BLL.GetList(id);
+            StringBuilder sb = new StringBuilder("");
+            foreach (var i in list)
+            {
+                sb.AppendFormat("<option value='{0}'>{1}</option>", i.Id, i.Name);
+            }
+
+            return Json(sb.ToString());
+        }
+
         #region 创建
         [SupportFilter]
         public ActionResult Create(string id)

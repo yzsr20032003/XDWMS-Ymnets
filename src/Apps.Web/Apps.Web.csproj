@@ -276,6 +276,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\EMS\Controllers\DeviceAreaController.cs" />
+    <Compile Include="Areas\EMS\Controllers\DeviceDetailsController.cs" />
     <Compile Include="Areas\EMS\Controllers\DeviceStateController.cs" />
     <Compile Include="Areas\EMS\Controllers\DeviceTypeController.cs" />
     <Compile Include="Areas\EMS\EMSAreaRegistration.cs" />
@@ -728,6 +729,11 @@
     <Content Include="Areas\EMS\Views\DeviceType\Create.cshtml" />
     <Content Include="Areas\EMS\Views\DeviceType\Edit.cshtml" />
     <Content Include="Areas\EMS\Views\DeviceType\Index.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceDetails\Create.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceDetails\CreateParent.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceDetails\Edit.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceDetails\EditParent.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceDetails\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

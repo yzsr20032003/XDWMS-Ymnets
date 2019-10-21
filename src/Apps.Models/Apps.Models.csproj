@@ -275,6 +275,7 @@
       <DependentUpon>PartialModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EMS\EMS_DeviceAreaModel.cs" />
+    <Compile Include="EMS\EMS_DeviceDetailsModel.cs" />
     <Compile Include="EMS\EMS_DeviceStateModel.cs" />
     <Compile Include="EMS\EMS_DeviceTypeModel.cs" />
     <Compile Include="EMS_DeviceArea.cs">

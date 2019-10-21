@@ -19,8 +19,8 @@ namespace Apps.Models
             this.EMS_DeviceDetails = new HashSet<EMS_DeviceDetails>();
         }
     
-        public int Id { get; set; }
-        public int ParentId { get; set; }
+        public string Id { get; set; }
+        public string ParentId { get; set; }
         public string Name { get; set; }
         public System.DateTime CreateTime { get; set; }
     

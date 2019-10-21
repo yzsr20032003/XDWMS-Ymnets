@@ -20,9 +20,9 @@ namespace Apps.Models.EMS
 	public class Virtual_EMS_DeviceAreaModel
 	{
 		[Display(Name = "主键ID")]
-		public virtual int Id { get; set; }
+		public virtual string Id { get; set; }
 		[Display(Name = "区域父ID")]
-		public virtual int ParentId { get; set; }
+		public virtual string ParentId { get; set; }
 		[Display(Name = "区域名称")]
 		public virtual string Name { get; set; }
 		[Display(Name = "未设置")]

@@ -20,14 +20,14 @@ namespace Apps.Web.Areas.EMS.Controllers
         [Dependency]
         public IEMS_DeviceStateBLL m_BLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
-        
+
         [SupportFilter]
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
+        [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             List<EMS_DeviceStateModel> list = m_BLL.GetList(ref pager, queryStr);
@@ -47,7 +47,7 @@ namespace Apps.Web.Areas.EMS.Controllers
         [SupportFilter]
         public JsonResult Create(EMS_DeviceStateModel model)
         {
-            model.Id = 0;
+            model.Id = ResultHelper.NewId;
             model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace Apps.Web.Areas.EMS.Controllers
 
         #region 修改
         [SupportFilter]
-        public ActionResult Edit(long id)
+        public ActionResult Edit(string id)
         {
             EMS_DeviceStateModel entity = m_BLL.GetById(id);
             return View(entity);
@@ -107,7 +107,7 @@ namespace Apps.Web.Areas.EMS.Controllers
 
         #region 详细
         [SupportFilter]
-        public ActionResult Details(long id)
+        public ActionResult Details(string id)
         {
             EMS_DeviceStateModel entity = m_BLL.GetById(id);
             return View(entity);
@@ -118,9 +118,9 @@ namespace Apps.Web.Areas.EMS.Controllers
         #region 删除
         [HttpPost]
         [SupportFilter]
-        public ActionResult Delete(long id)
+        public ActionResult Delete(string id)
         {
-            if(id!=0)
+            if (!string.IsNullOrWhiteSpace(id))
             {
                 if (m_BLL.Delete(ref errors, id))
                 {
@@ -180,28 +180,27 @@ namespace Apps.Web.Areas.EMS.Controllers
         {
             List<EMS_DeviceStateModel> list = m_BLL.GetList(ref setNoPagerAscById, "");
             JArray jObjects = new JArray();
-                foreach (var item in list)
-                {
-                    var jo = new JObject();
-                    jo.Add("Id", item.Id);
-                    jo.Add("Code", item.Code);
-                    jo.Add("Name", item.Name);
-                    jo.Add("CreateTime", item.CreateTime);
-                    jObjects.Add(jo);
-                }
-                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-                var exportFileName = string.Concat(
-                    "File",
-                    DateTime.Now.ToString("yyyyMMddHHmmss"),
-                    ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
+            foreach (var item in list)
+            {
+                var jo = new JObject();
+                jo.Add("Id", item.Id);
+                jo.Add("Code", item.Code);
+                jo.Add("Name", item.Name);
+                jo.Add("CreateTime", item.CreateTime);
+                jObjects.Add(jo);
             }
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat(
+                "File",
+                DateTime.Now.ToString("yyyyMMddHHmmss"),
+                ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         #endregion
     }
 }
-

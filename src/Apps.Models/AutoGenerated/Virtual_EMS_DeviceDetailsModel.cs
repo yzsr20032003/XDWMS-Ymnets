@@ -20,11 +20,11 @@ namespace Apps.Models.EMS
 	public class Virtual_EMS_DeviceDetailsModel
 	{
 		[Display(Name = "主键ID")]
-		public virtual int Id { get; set; }
+		public virtual string Id { get; set; }
 		[Display(Name = "区域ID")]
-		public virtual int AreaId { get; set; }
+		public virtual string AreaId { get; set; }
 		[Display(Name = "父级ID")]
-		public virtual int ParentID { get; set; }
+		public virtual string ParentID { get; set; }
 		[Display(Name = "设备编码")]
 		public virtual string Code { get; set; }
 		[Display(Name = "设备名称")]

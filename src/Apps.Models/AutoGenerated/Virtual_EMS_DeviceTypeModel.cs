@@ -20,7 +20,7 @@ namespace Apps.Models.EMS
 	public class Virtual_EMS_DeviceTypeModel
 	{
 		[Display(Name = "主键ID")]
-		public virtual int Id { get; set; }
+		public virtual string Id { get; set; }
 		[Display(Name = "类型编码")]
 		public virtual string Code { get; set; }
 		[Display(Name = "类型名称")]

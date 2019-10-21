@@ -41,10 +41,10 @@ namespace Apps.BLL.EMS
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
-								
-								
-								
-								a=>a.Code.Contains(queryStr)
+								a=>a.Id.Contains(queryStr)
+								|| a.AreaId.Contains(queryStr)
+								|| a.ParentID.Contains(queryStr)
+								|| a.Code.Contains(queryStr)
 								|| a.Name.Contains(queryStr)
 								|| a.Model.Contains(queryStr)
 								|| a.OEM.Contains(queryStr)
@@ -361,7 +361,7 @@ namespace Apps.BLL.EMS
                     foreach (var model in list)
                     {
                         EMS_DeviceDetails entity = new EMS_DeviceDetails();
-                       						entity.Id = 0;
+                       						entity.Id = ResultHelper.NewId;
 						entity.AreaId = model.AreaId;
 						entity.ParentID = model.ParentID;
 						entity.Code = model.Code;

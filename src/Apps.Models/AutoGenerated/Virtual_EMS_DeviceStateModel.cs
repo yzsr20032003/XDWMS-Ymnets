@@ -20,7 +20,7 @@ namespace Apps.Models.EMS
 	public class Virtual_EMS_DeviceStateModel
 	{
 		[Display(Name = "主键名称")]
-		public virtual int Id { get; set; }
+		public virtual string Id { get; set; }
 		[Display(Name = "状态编码")]
 		public virtual string Code { get; set; }
 		[Display(Name = "状态名称")]

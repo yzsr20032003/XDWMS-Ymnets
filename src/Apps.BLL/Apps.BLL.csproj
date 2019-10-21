@@ -319,7 +319,9 @@
     </Compile>
     <Compile Include="Core\BaseBLL.cs" />
     <Compile Include="Core\ExceptionHandler.cs" />
+    <Compile Include="EMS\EMS_DeviceAreaBLL.cs" />
     <Compile Include="EMS\EMS_DeviceStateBLL.cs" />
+    <Compile Include="EMS\EMS_DeviceTypeBLL.cs" />
     <Compile Include="Flow\FlowHelper.cs" />
     <Compile Include="Flow\Flow_ExternalBLL.cs" />
     <Compile Include="Flow\Flow_FormAttrBLL.cs" />

@@ -275,7 +275,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\EMS\Controllers\DeviceAreaController.cs" />
     <Compile Include="Areas\EMS\Controllers\DeviceStateController.cs" />
+    <Compile Include="Areas\EMS\Controllers\DeviceTypeController.cs" />
     <Compile Include="Areas\EMS\EMSAreaRegistration.cs" />
     <Compile Include="Areas\Demo\Controllers\BaseDemoController.cs" />
     <Compile Include="Areas\Demo\DemoAreaRegistration.cs" />
@@ -720,6 +722,12 @@
     <Content Include="Areas\EMS\Views\DeviceState\Create.cshtml" />
     <Content Include="Areas\EMS\Views\DeviceState\Edit.cshtml" />
     <Content Include="Areas\EMS\Views\DeviceState\Index.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceArea\Create.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceArea\Edit.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceArea\Index.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceType\Create.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceType\Edit.cshtml" />
+    <Content Include="Areas\EMS\Views\DeviceType\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

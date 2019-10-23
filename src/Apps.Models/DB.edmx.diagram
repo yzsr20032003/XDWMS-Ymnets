@@ -143,10 +143,12 @@
         <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantOUT_SysUser" />
         <AssociationConnector Association="DB.SysRoleSpl_Warehouse" />
         <EntityTypeShape EntityType="DB.EMS_DeviceArea" Width="1.5" PointX="17.75" PointY="5.875" />
-        <EntityTypeShape EntityType="DB.EMS_DeviceDetails" Width="1.5" PointX="20" PointY="5" />
         <EntityTypeShape EntityType="DB.EMS_DeviceState" Width="1.5" PointX="0.75" PointY="17.75" />
         <EntityTypeShape EntityType="DB.EMS_DeviceType" Width="1.5" PointX="17.75" PointY="9.75" />
+        <EntityTypeShape EntityType="DB.EMS_DeviceDetails" Width="1.5" PointX="20" PointY="10.75" />
         <AssociationConnector Association="DB.FK_EMS_DeviceArea" />
+        <AssociationConnector Association="DB.FK_EMS_DeviceState" />
+        <AssociationConnector Association="DB.FK_EMS_DeviceType" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

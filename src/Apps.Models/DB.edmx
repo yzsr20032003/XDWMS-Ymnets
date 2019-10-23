@@ -23,10 +23,10 @@
           <Property Name="ParentID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Model" Type="nvarchar" MaxLength="50" />
+          <Property Name="Marking" Type="nvarchar" MaxLength="50" />
           <Property Name="OEM" Type="nvarchar" MaxLength="100" />
-          <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="State" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="50" />
           <Property Name="locking" Type="bit" Nullable="false" />
           <Property Name="CreateUser" Type="varchar" MaxLength="50" Nullable="false" />
@@ -1043,6 +1043,30 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
             </Principal>
             <Dependent Role="EMS_DeviceDetails">
               <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMS_DeviceState">
+          <End Role="EMS_DeviceState" Type="Self.EMS_DeviceState" Multiplicity="1" />
+          <End Role="EMS_DeviceDetails" Type="Self.EMS_DeviceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMS_DeviceState">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMS_DeviceDetails">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMS_DeviceType">
+          <End Role="EMS_DeviceType" Type="Self.EMS_DeviceType" Multiplicity="1" />
+          <End Role="EMS_DeviceDetails" Type="Self.EMS_DeviceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMS_DeviceType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMS_DeviceDetails">
+              <PropertyRef Name="Type" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2247,6 +2271,14 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
             <End Role="EMS_DeviceArea" EntitySet="EMS_DeviceArea" />
             <End Role="EMS_DeviceDetails" EntitySet="EMS_DeviceDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_EMS_DeviceState" Association="Self.FK_EMS_DeviceState">
+            <End Role="EMS_DeviceState" EntitySet="EMS_DeviceState" />
+            <End Role="EMS_DeviceDetails" EntitySet="EMS_DeviceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMS_DeviceType" Association="Self.FK_EMS_DeviceType">
+            <End Role="EMS_DeviceType" EntitySet="EMS_DeviceType" />
+            <End Role="EMS_DeviceDetails" EntitySet="EMS_DeviceDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Flow_Form_Flow_Type" Association="Self.FK_Flow_Form_Flow_Type">
             <End Role="Flow_Type" EntitySet="Flow_Type" />
             <End Role="Flow_Form" EntitySet="Flow_Form" />
@@ -3078,11 +3110,19 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
             <End Role="SysRole" EntitySet="SysRole" />
           </AssociationSet>
           <EntitySet Name="EMS_DeviceArea" EntityType="DB.EMS_DeviceArea" />
-          <EntitySet Name="EMS_DeviceDetails" EntityType="DB.EMS_DeviceDetails" />
           <EntitySet Name="EMS_DeviceState" EntityType="DB.EMS_DeviceState" />
           <EntitySet Name="EMS_DeviceType" EntityType="DB.EMS_DeviceType" />
+          <EntitySet Name="EMS_DeviceDetails" EntityType="DB.EMS_DeviceDetails" />
           <AssociationSet Name="FK_EMS_DeviceArea" Association="DB.FK_EMS_DeviceArea">
             <End Role="EMS_DeviceArea" EntitySet="EMS_DeviceArea" />
+            <End Role="EMS_DeviceDetails" EntitySet="EMS_DeviceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMS_DeviceState" Association="DB.FK_EMS_DeviceState">
+            <End Role="EMS_DeviceState" EntitySet="EMS_DeviceState" />
+            <End Role="EMS_DeviceDetails" EntitySet="EMS_DeviceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMS_DeviceType" Association="DB.FK_EMS_DeviceType">
+            <End Role="EMS_DeviceType" EntitySet="EMS_DeviceType" />
             <End Role="EMS_DeviceDetails" EntitySet="EMS_DeviceDetails" />
           </AssociationSet>
           </EntityContainer>
@@ -5355,25 +5395,6 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="EMS_DeviceDetails" Relationship="DB.FK_EMS_DeviceArea" FromRole="EMS_DeviceArea" ToRole="EMS_DeviceDetails" />
         </EntityType>
-        <EntityType Name="EMS_DeviceDetails">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="AreaId" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="ParentID" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OEM" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="State" Type="Int32" Nullable="false" />
-          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="locking" Type="Boolean" Nullable="false" />
-          <Property Name="CreateUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="EMS_DeviceArea" Relationship="DB.FK_EMS_DeviceArea" FromRole="EMS_DeviceDetails" ToRole="EMS_DeviceArea" />
-        </EntityType>
         <EntityType Name="EMS_DeviceState">
           <Key>
             <PropertyRef Name="Id" />
@@ -5382,6 +5403,7 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="EMS_DeviceDetails" Relationship="DB.FK_EMS_DeviceState" FromRole="EMS_DeviceState" ToRole="EMS_DeviceDetails" />
         </EntityType>
         <EntityType Name="EMS_DeviceType">
           <Key>
@@ -5391,6 +5413,28 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="EMS_DeviceDetails" Relationship="DB.FK_EMS_DeviceType" FromRole="EMS_DeviceType" ToRole="EMS_DeviceDetails" />
+        </EntityType>
+        <EntityType Name="EMS_DeviceDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AreaId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParentID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Marking" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OEM" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="locking" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="EMS_DeviceArea" Relationship="DB.FK_EMS_DeviceArea" FromRole="EMS_DeviceDetails" ToRole="EMS_DeviceArea" />
+          <NavigationProperty Name="EMS_DeviceState" Relationship="DB.FK_EMS_DeviceState" FromRole="EMS_DeviceDetails" ToRole="EMS_DeviceState" />
+          <NavigationProperty Name="EMS_DeviceType" Relationship="DB.FK_EMS_DeviceType" FromRole="EMS_DeviceDetails" ToRole="EMS_DeviceType" />
         </EntityType>
         <Association Name="FK_EMS_DeviceArea">
           <End Type="DB.EMS_DeviceArea" Role="EMS_DeviceArea" Multiplicity="1" />
@@ -5401,6 +5445,30 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
             </Principal>
             <Dependent Role="EMS_DeviceDetails">
               <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMS_DeviceState">
+          <End Type="DB.EMS_DeviceState" Role="EMS_DeviceState" Multiplicity="1" />
+          <End Type="DB.EMS_DeviceDetails" Role="EMS_DeviceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMS_DeviceState">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMS_DeviceDetails">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMS_DeviceType">
+          <End Type="DB.EMS_DeviceType" Role="EMS_DeviceType" Multiplicity="1" />
+          <End Type="DB.EMS_DeviceDetails" Role="EMS_DeviceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMS_DeviceType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMS_DeviceDetails">
+              <PropertyRef Name="Type" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6736,25 +6804,6 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EMS_DeviceDetails">
-            <EntityTypeMapping TypeName="DB.EMS_DeviceDetails">
-              <MappingFragment StoreEntitySet="EMS_DeviceDetails">
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="locking" ColumnName="locking" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="OEM" ColumnName="OEM" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
-                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EMS_DeviceState">
             <EntityTypeMapping TypeName="DB.EMS_DeviceState">
               <MappingFragment StoreEntitySet="EMS_DeviceState">
@@ -6771,6 +6820,25 @@ warning 6002: The table/view 'AppsDB_Spl.dbo.SysUserConfig' does not have a prim
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMS_DeviceDetails">
+            <EntityTypeMapping TypeName="DB.EMS_DeviceDetails">
+              <MappingFragment StoreEntitySet="EMS_DeviceDetails">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="locking" ColumnName="locking" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OEM" ColumnName="OEM" />
+                <ScalarProperty Name="Marking" ColumnName="Marking" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -94,12 +94,12 @@ $.messageBox5s(Lang.Tip, mes);
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.Model)：
+                @Html.LabelFor(model => model.Marking)：
             </th>
             <td>
-                @Html.EditorFor(model => model.Model)
+                @Html.EditorFor(model => model.Marking)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.Model)</td>
+            <td>@Html.ValidationMessageFor(model => model.Marking)</td>
         </tr>
         <tr>
             <th>
@@ -114,9 +114,8 @@ $.messageBox5s(Lang.Tip, mes);
             <th>
                 @Html.LabelFor(model => model.Type)：
             </th>
-            <td>
-                @Html.EditorFor(model => model.Type)
-            </td>
+            <td>         
+                @Html.DropDownListFor(model => model.Type,ViewBag.DeviceType as SelectList)
             <td>@Html.ValidationMessageFor(model => model.Type)</td>
         </tr>
         <tr>
@@ -124,7 +123,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.State)：
             </th>
             <td>
-                @Html.EditorFor(model => model.State)
+                @Html.DropDownListFor(model => model.State,ViewBag.DeviceState as SelectList)
             </td>
             <td>@Html.ValidationMessageFor(model => model.State)</td>
         </tr>
@@ -150,11 +149,13 @@ $.messageBox5s(Lang.Tip, mes);
             <th>
                 @Html.LabelFor(model => model.CreateUser)：
             </th>
+
             <td>
                 @Html.EditorFor(model => model.CreateUser)
             </td>
             <td>@Html.ValidationMessageFor(model => model.CreateUser)</td>
         </tr>
+
     </tbody>
 </table>
 }

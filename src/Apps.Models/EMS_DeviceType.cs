@@ -14,9 +14,16 @@ namespace Apps.Models
     
     public partial class EMS_DeviceType
     {
+        public EMS_DeviceType()
+        {
+            this.EMS_DeviceDetails = new HashSet<EMS_DeviceDetails>();
+        }
+    
         public string Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public System.DateTime CreateTime { get; set; }
+    
+        public virtual ICollection<EMS_DeviceDetails> EMS_DeviceDetails { get; set; }
     }
 }

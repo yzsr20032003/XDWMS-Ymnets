@@ -19,15 +19,17 @@ namespace Apps.Models
         public string ParentID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string Model { get; set; }
+        public string Marking { get; set; }
         public string OEM { get; set; }
-        public int Type { get; set; }
-        public int State { get; set; }
+        public string Type { get; set; }
+        public string State { get; set; }
         public string Remark { get; set; }
         public bool locking { get; set; }
         public string CreateUser { get; set; }
         public System.DateTime CreateTime { get; set; }
     
         public virtual EMS_DeviceArea EMS_DeviceArea { get; set; }
+        public virtual EMS_DeviceState EMS_DeviceState { get; set; }
+        public virtual EMS_DeviceType EMS_DeviceType { get; set; }
     }
 }

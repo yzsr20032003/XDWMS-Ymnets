@@ -46,10 +46,10 @@ namespace Apps.BLL.EMS
 								|| a.ParentID.Contains(queryStr)
 								|| a.Code.Contains(queryStr)
 								|| a.Name.Contains(queryStr)
-								|| a.Model.Contains(queryStr)
+								|| a.Marking.Contains(queryStr)
 								|| a.OEM.Contains(queryStr)
-								
-								
+								|| a.Type.Contains(queryStr)
+								|| a.State.Contains(queryStr)
 								|| a.Remark.Contains(queryStr)
 								
 								|| a.CreateUser.Contains(queryStr)
@@ -87,7 +87,7 @@ namespace Apps.BLL.EMS
 													ParentID = r.ParentID,
 													Code = r.Code,
 													Name = r.Name,
-													Model = r.Model,
+													Marking = r.Marking,
 													OEM = r.OEM,
 													Type = r.Type,
 													State = r.State,
@@ -117,7 +117,7 @@ namespace Apps.BLL.EMS
 				entity.ParentID = model.ParentID;
 				entity.Code = model.Code;
 				entity.Name = model.Name;
-				entity.Model = model.Model;
+				entity.Marking = model.Marking;
 				entity.OEM = model.OEM;
 				entity.Type = model.Type;
 				entity.State = model.State;
@@ -216,7 +216,7 @@ namespace Apps.BLL.EMS
 				entity.ParentID = model.ParentID;
 				entity.Code = model.Code;
 				entity.Name = model.Name;
-				entity.Model = model.Model;
+				entity.Marking = model.Marking;
 				entity.OEM = model.OEM;
 				entity.Type = model.Type;
 				entity.State = model.State;
@@ -259,7 +259,7 @@ namespace Apps.BLL.EMS
 				model.ParentID = entity.ParentID;
 				model.Code = entity.Code;
 				model.Name = entity.Name;
-				model.Model = entity.Model;
+				model.Marking = entity.Marking;
 				model.OEM = entity.OEM;
 				model.Type = entity.Type;
 				model.State = entity.State;
@@ -299,7 +299,7 @@ namespace Apps.BLL.EMS
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.ParentID, "ParentID");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.Code, "Code");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.Model, "Model");
+				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.Marking, "Marking");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.OEM, "OEM");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.Type, "Type");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.State, "State");
@@ -321,7 +321,7 @@ namespace Apps.BLL.EMS
 				  entity.ParentID = row.ParentID;
 				  entity.Code = row.Code;
 				  entity.Name = row.Name;
-				  entity.Model = row.Model;
+				  entity.Marking = row.Marking;
 				  entity.OEM = row.OEM;
 				  entity.Type = row.Type;
 				  entity.State = row.State;
@@ -366,7 +366,7 @@ namespace Apps.BLL.EMS
 						entity.ParentID = model.ParentID;
 						entity.Code = model.Code;
 						entity.Name = model.Name;
-						entity.Model = model.Model;
+						entity.Marking = model.Marking;
 						entity.OEM = model.OEM;
 						entity.Type = model.Type;
 						entity.State = model.State;

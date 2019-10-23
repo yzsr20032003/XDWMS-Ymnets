@@ -21,18 +21,24 @@ namespace Apps.Web.Areas.EMS.Controllers
         public IEMS_DeviceDetailsBLL m_BLL { get; set; }
         [Dependency]
         public IEMS_DeviceAreaBLL m_DeviceAreaBLL { get; set; }
+
+        [Dependency]
+        public IEMS_DeviceStateBLL m_DeviceStateBll { get; set; }
+
+        [Dependency]
+        public IEMS_DeviceTypeBLL m_DeviceTypeBll { get; set; }
         ValidationErrors errors = new ValidationErrors();
-        
+
         [SupportFilter]
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr,string parentId)
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetList(GridPager pager, string queryStr, string parentId)
         {
-            List<EMS_DeviceDetailsModel> list = m_BLL.GetListByParentId(ref pager, queryStr,parentId);
+            List<EMS_DeviceDetailsModel> list = m_BLL.GetListByParentId(ref pager, queryStr, parentId);
             GridRows<EMS_DeviceDetailsModel> grs = new GridRows<EMS_DeviceDetailsModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -42,10 +48,12 @@ namespace Apps.Web.Areas.EMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
-         ViewBag.DeviceArea = new SelectList(m_DeviceAreaBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name");
+            ViewBag.DeviceArea = new SelectList(m_DeviceAreaBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name");
+            ViewBag.DeviceState = new SelectList(m_DeviceStateBll.GetList(ref setNoPagerAscById, ""), "Id", "Name");
+            ViewBag.DeviceType = new SelectList(m_DeviceTypeBll.GetList(ref setNoPagerAscById, ""), "Id", "Name");
             return View();
         }
-
+       
         [HttpPost]
         [SupportFilter]
         public JsonResult Create(EMS_DeviceDetailsModel model)
@@ -79,7 +87,7 @@ namespace Apps.Web.Areas.EMS.Controllers
         public ActionResult Edit(string id)
         {
             EMS_DeviceDetailsModel entity = m_BLL.GetById(id);
-         ViewBag.DeviceArea = new SelectList(m_DeviceAreaBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name",entity.AreaId);
+            ViewBag.DeviceArea = new SelectList(m_DeviceAreaBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name", entity.AreaId);
             return View(entity);
         }
 
@@ -124,7 +132,7 @@ namespace Apps.Web.Areas.EMS.Controllers
         [SupportFilter]
         public ActionResult Delete(string id)
         {
-            if(!string.IsNullOrWhiteSpace(id))
+            if (!string.IsNullOrWhiteSpace(id))
             {
                 if (m_BLL.Delete(ref errors, id))
                 {
@@ -184,39 +192,40 @@ namespace Apps.Web.Areas.EMS.Controllers
         {
             List<EMS_DeviceDetailsModel> list = m_BLL.GetList(ref setNoPagerAscById, "");
             JArray jObjects = new JArray();
-                foreach (var item in list)
-                {
-                    var jo = new JObject();
-                    jo.Add("Id", item.Id);
-                    jo.Add("AreaId", item.AreaId);
-                    jo.Add("ParentID", item.ParentID);
-                    jo.Add("Code", item.Code);
-                    jo.Add("Name", item.Name);
-                    jo.Add("Model", item.Model);
-                    jo.Add("OEM", item.OEM);
-                    jo.Add("Type", item.Type);
-                    jo.Add("State", item.State);
-                    jo.Add("Remark", item.Remark);
-                    jo.Add("locking", item.locking);
-                    jo.Add("CreateUser", item.CreateUser);
-                    jo.Add("CreateTime", item.CreateTime);
-                    jObjects.Add(jo);
-                }
-                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-                var exportFileName = string.Concat(
-                    "File",
-                    DateTime.Now.ToString("yyyyMMddHHmmss"),
-                    ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
+            foreach (var item in list)
+            {
+                var jo = new JObject();
+                jo.Add("Id", item.Id);
+                jo.Add("AreaId", item.AreaId);
+                jo.Add("ParentID", item.ParentID);
+                jo.Add("Code", item.Code);
+                jo.Add("Name", item.Name);
+                jo.Add("Marking", item.Marking);
+                jo.Add("OEM", item.OEM);
+                jo.Add("Type", item.Type);
+                jo.Add("State", item.State);
+                jo.Add("Remark", item.Remark);
+                jo.Add("locking", item.locking);
+                jo.Add("CreateUser", item.CreateUser);
+                jo.Add("CreateTime", item.CreateTime);
+                jObjects.Add(jo);
             }
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat(
+                "File",
+                DateTime.Now.ToString("yyyyMMddHHmmss"),
+                ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         #endregion
+        #region 创建
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
+        [SupportFilter(ActionName = "Index")]
         public JsonResult GetListParent(GridPager pager, string queryStr)
         {
             List<EMS_DeviceAreaModel> list = m_DeviceAreaBLL.GetList(ref pager, queryStr);
@@ -225,15 +234,15 @@ namespace Apps.Web.Areas.EMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
-        #region 创建
-        [SupportFilter(ActionName="Create")]
+        
+        [SupportFilter(ActionName = "Create")]
         public ActionResult CreateParent()
         {
             return View();
         }
 
         [HttpPost]
-        [SupportFilter(ActionName="Create")]
+        [SupportFilter(ActionName = "Create")]
         public JsonResult CreateParent(EMS_DeviceAreaModel model)
         {
             model.Id = ResultHelper.NewId;
@@ -261,7 +270,7 @@ namespace Apps.Web.Areas.EMS.Controllers
         #endregion
 
         #region 修改
-        [SupportFilter(ActionName="Edit")]
+        [SupportFilter(ActionName = "Edit")]
         public ActionResult EditParent(string id)
         {
             EMS_DeviceAreaModel entity = m_DeviceAreaBLL.GetById(id);
@@ -269,7 +278,7 @@ namespace Apps.Web.Areas.EMS.Controllers
         }
 
         [HttpPost]
-        [SupportFilter(ActionName="Edit")]
+        [SupportFilter(ActionName = "Edit")]
         public JsonResult EditParent(EMS_DeviceAreaModel model)
         {
             if (model != null && ModelState.IsValid)
@@ -295,7 +304,7 @@ namespace Apps.Web.Areas.EMS.Controllers
         #endregion
 
         #region 详细
-        [SupportFilter(ActionName="Details")]
+        [SupportFilter(ActionName = "Details")]
         public ActionResult DetailsParent(string id)
         {
             EMS_DeviceAreaModel entity = m_DeviceAreaBLL.GetById(id);
@@ -306,10 +315,10 @@ namespace Apps.Web.Areas.EMS.Controllers
 
         #region 删除
         [HttpPost]
-        [SupportFilter(ActionName="Delete")]
+        [SupportFilter(ActionName = "Delete")]
         public ActionResult DeleteParent(string id)
         {
-            if(!string.IsNullOrWhiteSpace(id))
+            if (!string.IsNullOrWhiteSpace(id))
             {
                 if (m_DeviceAreaBLL.Delete(ref errors, id))
                 {
@@ -331,3 +340,4 @@ namespace Apps.Web.Areas.EMS.Controllers
         #endregion
     }
 }
+

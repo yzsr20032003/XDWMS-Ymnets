@@ -30,13 +30,13 @@ namespace Apps.Models.EMS
 		[Display(Name = "设备名称")]
 		public virtual string Name { get; set; }
 		[Display(Name = "设备型号")]
-		public virtual string Model { get; set; }
+		public virtual string Marking { get; set; }
 		[Display(Name = "生产厂家")]
 		public virtual string OEM { get; set; }
 		[Display(Name = "设备类型")]
-		public virtual int Type { get; set; }
+		public virtual string Type { get; set; }
 		[Display(Name = "设备状态")]
-		public virtual int State { get; set; }
+		public virtual string State { get; set; }
 		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "未设置")]

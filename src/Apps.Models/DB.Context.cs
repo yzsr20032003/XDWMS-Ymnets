@@ -94,9 +94,9 @@ namespace Apps.Models
         public virtual DbSet<Spl_WareStockPile> Spl_WareStockPile { get; set; }
         public virtual DbSet<Spl_WareUnitConvert> Spl_WareUnitConvert { get; set; }
         public virtual DbSet<EMS_DeviceArea> EMS_DeviceArea { get; set; }
-        public virtual DbSet<EMS_DeviceDetails> EMS_DeviceDetails { get; set; }
         public virtual DbSet<EMS_DeviceState> EMS_DeviceState { get; set; }
         public virtual DbSet<EMS_DeviceType> EMS_DeviceType { get; set; }
+        public virtual DbSet<EMS_DeviceDetails> EMS_DeviceDetails { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {

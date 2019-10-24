@@ -39,11 +39,11 @@ namespace Apps.Models.EMS
 		public virtual string State { get; set; }
 		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "锁定")]
 		public virtual bool locking { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "创建人")]
 		public virtual string CreateUser { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "创建时间")]
 		public virtual System.DateTime CreateTime { get; set; }
 		}
 }

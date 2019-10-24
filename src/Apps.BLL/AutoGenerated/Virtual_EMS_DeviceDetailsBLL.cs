@@ -26,21 +26,21 @@ namespace Apps.BLL.EMS
 {
 	public partial class EMS_DeviceDetailsBLL: Virtual_EMS_DeviceDetailsBLL,IEMS_DeviceDetailsBLL
 	{
-        
+		
 
 	}
 	public class Virtual_EMS_DeviceDetailsBLL
 	{
-        [Dependency]
-        public IEMS_DeviceDetailsRepository m_Rep { get; set; }
+		[Dependency]
+		public IEMS_DeviceDetailsRepository m_Rep { get; set; }
 
 		public virtual List<EMS_DeviceDetailsModel> GetList(ref GridPager pager, string queryStr)
-        {
+		{
 
-            IQueryable<EMS_DeviceDetails> queryData = null;
-            if (!string.IsNullOrWhiteSpace(queryStr))
-            {
-                queryData = m_Rep.GetList(
+			IQueryable<EMS_DeviceDetails> queryData = null;
+			if (!string.IsNullOrWhiteSpace(queryStr))
+			{
+				queryData = m_Rep.GetList(
 								a=>a.Id.Contains(queryStr)
 								|| a.AreaId.Contains(queryStr)
 								|| a.ParentID.Contains(queryStr)
@@ -55,16 +55,16 @@ namespace Apps.BLL.EMS
 								|| a.CreateUser.Contains(queryStr)
 								
 								);
-            }
-            else
-            {
-                queryData = m_Rep.GetList();
-            }
-            pager.totalRows = queryData.Count();
-            //排序
-            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
-            return CreateModelList(ref queryData);
-        }
+			}
+			else
+			{
+				queryData = m_Rep.GetList();
+			}
+			pager.totalRows = queryData.Count();
+			//排序
+			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+			return CreateModelList(ref queryData);
+		}
 
 		public virtual List<EMS_DeviceDetailsModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
@@ -72,16 +72,16 @@ namespace Apps.BLL.EMS
 		}
 		
 		public virtual List<EMS_DeviceDetailsModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
-        {
+		{
 			return new List<EMS_DeviceDetailsModel>();
 		}
 
-        public virtual List<EMS_DeviceDetailsModel> CreateModelList(ref IQueryable<EMS_DeviceDetails> queryData)
-        {
+		public virtual List<EMS_DeviceDetailsModel> CreateModelList(ref IQueryable<EMS_DeviceDetails> queryData)
+		{
 
-            List<EMS_DeviceDetailsModel> modelList = (from r in queryData
-                                              select new EMS_DeviceDetailsModel
-                                              {
+			List<EMS_DeviceDetailsModel> modelList = (from r in queryData
+											  select new EMS_DeviceDetailsModel
+											  {
 													Id = r.Id,
 													AreaId = r.AreaId,
 													ParentID = r.ParentID,
@@ -95,24 +95,24 @@ namespace Apps.BLL.EMS
 													locking = r.locking,
 													CreateUser = r.CreateUser,
 													CreateTime = r.CreateTime,
-          
-                                              }).ToList();
+		  
+											  }).ToList();
 
-            return modelList;
-        }
+			return modelList;
+		}
 
-        public virtual bool Create(ref ValidationErrors errors, EMS_DeviceDetailsModel model)
-        {
-            try
-            {
-                EMS_DeviceDetails entity = m_Rep.GetById(model.Id);
-                if (entity != null)
-                {
-                    errors.Add(Resource.PrimaryRepeat);
-                    return false;
-                }
-                entity = new EMS_DeviceDetails();
-               				entity.Id = model.Id;
+		public virtual bool Create(ref ValidationErrors errors, EMS_DeviceDetailsModel model)
+		{
+			try
+			{
+				EMS_DeviceDetails entity = m_Rep.GetById(model.Id);
+				if (entity != null)
+				{
+					errors.Add(Resource.PrimaryRepeat);
+					return false;
+				}
+				entity = new EMS_DeviceDetails();
+							entity.Id = model.Id;
 				entity.AreaId = model.AreaId;
 				entity.ParentID = model.ParentID;
 				entity.Code = model.Code;
@@ -127,91 +127,91 @@ namespace Apps.BLL.EMS
 				entity.CreateTime = model.CreateTime;
   
 
-                if (m_Rep.Create(entity))
-                {
-                    return true;
-                }
-                else
-                {
-                    errors.Add(Resource.InsertFail);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
-        }
+				if (m_Rep.Create(entity))
+				{
+					return true;
+				}
+				else
+				{
+					errors.Add(Resource.InsertFail);
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				ExceptionHander.WriteException(ex);
+				return false;
+			}
+		}
 
 
 
-         public virtual bool Delete(ref ValidationErrors errors, object id)
-        {
-            try
-            {
-                if (m_Rep.Delete(id) == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
-        }
+		 public virtual bool Delete(ref ValidationErrors errors, object id)
+		{
+			try
+			{
+				if (m_Rep.Delete(id) == 1)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				ExceptionHander.WriteException(ex);
+				return false;
+			}
+		}
 
-        public virtual bool Delete(ref ValidationErrors errors, object[] deleteCollection)
-        {
-            try
-            {
-                if (deleteCollection != null)
-                {
-                    using (TransactionScope transactionScope = new TransactionScope())
-                    {
-                        if (m_Rep.Delete(deleteCollection) == deleteCollection.Length)
-                        {
-                            transactionScope.Complete();
-                            return true;
-                        }
-                        else
-                        {
-                            Transaction.Current.Rollback();
-                            return false;
-                        }
-                    }
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
-        }
+		public virtual bool Delete(ref ValidationErrors errors, object[] deleteCollection)
+		{
+			try
+			{
+				if (deleteCollection != null)
+				{
+					using (TransactionScope transactionScope = new TransactionScope())
+					{
+						if (m_Rep.Delete(deleteCollection) == deleteCollection.Length)
+						{
+							transactionScope.Complete();
+							return true;
+						}
+						else
+						{
+							Transaction.Current.Rollback();
+							return false;
+						}
+					}
+				}
+				return false;
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				ExceptionHander.WriteException(ex);
+				return false;
+			}
+		}
 
 		
-       
+	   
 
-        public virtual bool Edit(ref ValidationErrors errors, EMS_DeviceDetailsModel model)
-        {
-            try
-            {
-                EMS_DeviceDetails entity = m_Rep.GetById(model.Id);
-                if (entity == null)
-                {
-                    errors.Add(Resource.Disable);
-                    return false;
-                }
-                              				entity.Id = model.Id;
+		public virtual bool Edit(ref ValidationErrors errors, EMS_DeviceDetailsModel model)
+		{
+			try
+			{
+				EMS_DeviceDetails entity = m_Rep.GetById(model.Id);
+				if (entity == null)
+				{
+					errors.Add(Resource.Disable);
+					return false;
+				}
+											entity.Id = model.Id;
 				entity.AreaId = model.AreaId;
 				entity.ParentID = model.ParentID;
 				entity.Code = model.Code;
@@ -227,34 +227,34 @@ namespace Apps.BLL.EMS
  
 
 
-                if (m_Rep.Edit(entity))
-                {
-                    return true;
-                }
-                else
-                {
-                    errors.Add(Resource.NoDataChange);
-                    return false;
-                }
+				if (m_Rep.Edit(entity))
+				{
+					return true;
+				}
+				else
+				{
+					errors.Add(Resource.NoDataChange);
+					return false;
+				}
 
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
-        }
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				ExceptionHander.WriteException(ex);
+				return false;
+			}
+		}
 
-      
+	  
 
-        public virtual EMS_DeviceDetailsModel GetById(object id)
-        {
-            if (IsExists(id))
-            {
-                EMS_DeviceDetails entity = m_Rep.GetById(id);
-                EMS_DeviceDetailsModel model = new EMS_DeviceDetailsModel();
-                              				model.Id = entity.Id;
+		public virtual EMS_DeviceDetailsModel GetById(object id)
+		{
+			if (IsExists(id))
+			{
+				EMS_DeviceDetails entity = m_Rep.GetById(id);
+				EMS_DeviceDetailsModel model = new EMS_DeviceDetailsModel();
+											model.Id = entity.Id;
 				model.AreaId = entity.AreaId;
 				model.ParentID = entity.ParentID;
 				model.Code = entity.Code;
@@ -268,34 +268,34 @@ namespace Apps.BLL.EMS
 				model.CreateUser = entity.CreateUser;
 				model.CreateTime = entity.CreateTime;
  
-                return model;
-            }
-            else
-            {
-                return null;
-            }
-        }
+				return model;
+			}
+			else
+			{
+				return null;
+			}
+		}
 
 
 		 /// <summary>
-        /// 校验Excel数据,这个方法一般用于重写校验逻辑
-        /// </summary>
-        public virtual bool CheckImportData(string fileName, List<EMS_DeviceDetailsModel> list,ref ValidationErrors errors )
-        {
-          
-            var targetFile = new FileInfo(fileName);
+		/// 校验Excel数据,这个方法一般用于重写校验逻辑
+		/// </summary>
+		public virtual bool CheckImportData(string fileName, List<EMS_DeviceDetailsModel> list,ref ValidationErrors errors )
+		{
+		  
+			var targetFile = new FileInfo(fileName);
 
-            if (!targetFile.Exists)
-            {
+			if (!targetFile.Exists)
+			{
 
-                errors.Add("导入的数据文件不存在");
-                return false;
-            }
+				errors.Add("导入的数据文件不存在");
+				return false;
+			}
 
-            var excelFile = new ExcelQueryFactory(fileName);
+			var excelFile = new ExcelQueryFactory(fileName);
 
-            //对应列头
-			 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.AreaId, "AreaId");
+			//对应列头
+							 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.AreaId, "AreaId");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.ParentID, "ParentID");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.Code, "Code");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.Name, "Name");
@@ -308,15 +308,15 @@ namespace Apps.BLL.EMS
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.CreateUser, "CreateUser");
 				 excelFile.AddMapping<EMS_DeviceDetailsModel>(x => x.CreateTime, "CreateTime");
  
-            //SheetName
-            var excelContent = excelFile.Worksheet<EMS_DeviceDetailsModel>(0);
-            int rowIndex = 1;
-            //检查数据正确性
-            foreach (var row in excelContent)
-            {
-                var errorMessage = new StringBuilder();
-                var entity = new EMS_DeviceDetailsModel();
-						 				  entity.Id = row.Id;
+			//SheetName
+			var excelContent = excelFile.Worksheet<EMS_DeviceDetailsModel>(0);
+			int rowIndex = 1;
+			//检查数据正确性
+			foreach (var row in excelContent)
+			{
+				var errorMessage = new StringBuilder();
+				var entity = new EMS_DeviceDetailsModel();
+										  entity.Id = row.Id;
 				  entity.AreaId = row.AreaId;
 				  entity.ParentID = row.ParentID;
 				  entity.Code = row.Code;
@@ -330,38 +330,38 @@ namespace Apps.BLL.EMS
 				  entity.CreateUser = row.CreateUser;
 				  entity.CreateTime = row.CreateTime;
  
-                //=============================================================================
-                if (errorMessage.Length > 0)
-                {
-                    errors.Add(string.Format(
-                        "第 {0} 列发现错误：{1}{2}",
-                        rowIndex,
-                        errorMessage,
-                        "<br/>"));
-                }
-                list.Add(entity);
-                rowIndex += 1;
-            }
-            if (errors.Count > 0)
-            {
-                return false;
-            }
-            return true;
-        }
+				//=============================================================================
+				if (errorMessage.Length > 0)
+				{
+					errors.Add(string.Format(
+						"第 {0} 列发现错误：{1}{2}",
+						rowIndex,
+						errorMessage,
+						"<br/>"));
+				}
+				list.Add(entity);
+				rowIndex += 1;
+			}
+			if (errors.Count > 0)
+			{
+				return false;
+			}
+			return true;
+		}
 
-        /// <summary>
-        /// 保存数据
-        /// </summary>
-        public virtual void SaveImportData(IEnumerable<EMS_DeviceDetailsModel> list)
-        {
-            try
-            {
-                using (DBContainer db = new DBContainer())
-                {
-                    foreach (var model in list)
-                    {
-                        EMS_DeviceDetails entity = new EMS_DeviceDetails();
-                       						entity.Id = ResultHelper.NewId;
+		/// <summary>
+		/// 保存数据
+		/// </summary>
+		public virtual void SaveImportData(IEnumerable<EMS_DeviceDetailsModel> list)
+		{
+			try
+			{
+				using (DBContainer db = new DBContainer())
+				{
+					foreach (var model in list)
+					{
+						EMS_DeviceDetails entity = new EMS_DeviceDetails();
+											entity.Id = ResultHelper.NewId;
 						entity.AreaId = model.AreaId;
 						entity.ParentID = model.ParentID;
 						entity.Code = model.Code;
@@ -375,30 +375,30 @@ namespace Apps.BLL.EMS
 						entity.CreateUser = model.CreateUser;
 						entity.CreateTime = ResultHelper.NowTime;
  
-                        db.EMS_DeviceDetails.Add(entity);
-                    }
-                    db.SaveChanges();
-                }
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }
-        }
+						db.EMS_DeviceDetails.Add(entity);
+					}
+					db.SaveChanges();
+				}
+			}
+			catch(Exception ex)
+			{
+				throw;
+			}
+		}
 		public virtual bool Check(ref ValidationErrors errors, object id,int flag)
-        {
+		{
 			return true;
 		}
 
-        public virtual bool IsExists(object id)
-        {
-            return m_Rep.IsExist(id);
-        }
+		public virtual bool IsExists(object id)
+		{
+			return m_Rep.IsExist(id);
+		}
 		
 		public void Dispose()
-        { 
-            
-        }
+		{ 
+			
+		}
 
 	}
 }

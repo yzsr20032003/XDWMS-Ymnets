@@ -32,13 +32,15 @@ namespace Apps.Web.Areas.EMS.Controllers
         [SupportFilter]
         public ActionResult Index()
         {
+            CommonHelper commonHelper = new CommonHelper();
+            ViewBag.GetDeviceAreaTree = commonHelper.GetDeviceAreaTree(true);
             return View();
         }
         [HttpPost]
         [SupportFilter(ActionName = "Index")]
-        public JsonResult GetList(GridPager pager, string queryStr, string parentId)
+        public JsonResult GetList(GridPager pager, string queryStr, string areaId)
         {
-            List<EMS_DeviceDetailsModel> list = m_BLL.GetListByParentId(ref pager, queryStr, parentId);
+            List<EMS_DeviceDetailsModel> list = m_BLL.GetList(ref pager, queryStr, areaId);
             GridRows<EMS_DeviceDetailsModel> grs = new GridRows<EMS_DeviceDetailsModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

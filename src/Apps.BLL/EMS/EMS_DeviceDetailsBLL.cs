@@ -5,16 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Apps.Models.EMS;
+using Apps.IBLL.EMS;
+
 
 namespace Apps.BLL.EMS
 {
     public partial class EMS_DeviceDetailsBLL
     {
 
-        public override List<EMS_DeviceDetailsModel> GetListByParentId(ref GridPager pager, string queryStr, object parentId)
+        public  List<EMS_DeviceDetailsModel> GetList(ref GridPager pager, string queryStr, string AreaId)
         {
             IQueryable<EMS_DeviceDetails> queryData = null;
-            string pid = parentId.ToString();
+            string pid = AreaId.ToString();
             if (pid != "0")
             {
                 queryData = m_Rep.GetList(a => a.AreaId == pid);

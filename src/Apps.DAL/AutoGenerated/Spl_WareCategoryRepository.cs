@@ -15,9 +15,9 @@ namespace Apps.DAL.Spl
 {
 	public partial class Spl_WareCategoryRepository:BaseRepository<Spl_WareCategory>,ISpl_WareCategoryRepository,IDisposable
 	{
-	    public Spl_WareCategoryRepository(DBContainer db):base(db)
-        {
-        
-        }
+		public Spl_WareCategoryRepository(DBContainer db):base(db)
+		{
+		
+		}
 	}
 }

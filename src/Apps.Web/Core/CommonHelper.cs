@@ -12,6 +12,7 @@ using Apps.DAL;
 using Apps.DAL.Sys;
 using Apps.BLL.Sys;
 using Apps.DAL.Spl;
+using Apps.DAL.EMS;
 
 
 namespace Apps.Web.Core
@@ -110,6 +111,7 @@ namespace Apps.Web.Core
 
         #endregion
 
+
         #region 组织架构+职位
         public string GetStructAndPosTree()
         {
@@ -192,6 +194,88 @@ namespace Apps.Web.Core
         #endregion
 
         #region 模块级
+
+        #region 设备区域
+        public string GetDeviceAreaTree(bool isCount)
+        {
+            StringBuilder sb = new StringBuilder();
+            using (EMS_DeviceAreaRepository structRep = new EMS_DeviceAreaRepository(new DBContainer()))
+            {
+                List<EMS_DeviceArea> queryData = structRep.GetList().ToList();
+                List<EMS_DeviceArea> query = queryData.Where(a => a.ParentId == "0").OrderBy(a => a.CreateTime).ToList();
+                string str = "";
+                sb.Append("<ul id=\"StructTree\" class=\"easyui-tree\"  data-options=\"onClick:function(node){ getSelected();}\">");
+                foreach (var l in query)
+                {
+                    str = GetDeviceAreaLayout(queryData, l.Id, isCount);
+                    if (str != "")
+                    {
+                        sb.Append("<li data-options=\"state:'closed',attributes:{'id':'" + l.Id + "'}\">");
+                    }
+                    else
+                    {
+                        sb.Append("<li data-options=\"attributes:{'id':'" + l.Id + "'}\">");
+                    }
+
+                    if (isCount)
+                    {
+                        sb.AppendFormat("<span>{0}</span>", l.Name);
+                    }
+                    else
+                    {
+                        sb.AppendFormat("<span>{0}</span>", l.Name);
+                    }
+                    sb.Append(GetDeviceAreaLayout(queryData, l.Id, isCount));
+                    sb.Append("</li>");
+                }
+                sb.Append("</ul>");
+            }
+            return sb.ToString();
+        }
+
+
+
+        public string GetDeviceAreaLayout(List<EMS_DeviceArea> queryData, string parentId, bool isCount)
+        {
+            List<EMS_DeviceArea> query = queryData.Where(a => a.ParentId == parentId).OrderBy(a => a.CreateTime).ToList();
+            StringBuilder sb = new StringBuilder();
+            string str = "";
+            if (query.Count() > 0)
+            {
+
+                sb.Append("<ul>");
+                foreach (var r in query)
+                {
+                    str = GetDeviceAreaLayout(queryData, r.Id, isCount);
+                    if (str != "")
+                    {
+                        sb.Append("<li data-options=\"state:'closed',attributes:{'id':'" + r.Id + "'}\">");
+                    }
+                    else
+                    {
+                        sb.Append("<li data-options=\"attributes:{'id':'" + r.Id + "'}\">");
+                    }
+                    if (isCount)
+                    {
+                        sb.AppendFormat("<span>{0}</span>", r.Name);
+                    }
+                    else
+                    {
+                        sb.AppendFormat("<span>{0}</span>", r.Name);
+                    }
+                    sb.Append(str);
+                    sb.Append("</li>");
+                }
+                sb.Append("</ul>");
+            }
+            return sb.ToString();
+        }
+
+
+
+
+        #endregion
+
         public string GetWareCateogryTree(bool isCount)
         {
             StringBuilder sb = new StringBuilder();

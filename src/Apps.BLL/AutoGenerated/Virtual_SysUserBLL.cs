@@ -26,21 +26,21 @@ namespace Apps.BLL.Sys
 {
 	public partial class SysUserBLL: Virtual_SysUserBLL,ISysUserBLL
 	{
-        
+		
 
 	}
 	public class Virtual_SysUserBLL
 	{
-        [Dependency]
-        public ISysUserRepository m_Rep { get; set; }
+		[Dependency]
+		public ISysUserRepository m_Rep { get; set; }
 
 		public virtual List<SysUserModel> GetList(ref GridPager pager, string queryStr)
-        {
+		{
 
-            IQueryable<SysUser> queryData = null;
-            if (!string.IsNullOrWhiteSpace(queryStr))
-            {
-                queryData = m_Rep.GetList(
+			IQueryable<SysUser> queryData = null;
+			if (!string.IsNullOrWhiteSpace(queryStr))
+			{
+				queryData = m_Rep.GetList(
 								a=>a.Id.Contains(queryStr)
 								|| a.UserName.Contains(queryStr)
 								|| a.Password.Contains(queryStr)
@@ -80,16 +80,16 @@ namespace Apps.BLL.Sys
 								
 								
 								);
-            }
-            else
-            {
-                queryData = m_Rep.GetList();
-            }
-            pager.totalRows = queryData.Count();
-            //排序
-            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
-            return CreateModelList(ref queryData);
-        }
+			}
+			else
+			{
+				queryData = m_Rep.GetList();
+			}
+			pager.totalRows = queryData.Count();
+			//排序
+			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+			return CreateModelList(ref queryData);
+		}
 
 		public virtual List<SysUserModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
@@ -97,16 +97,16 @@ namespace Apps.BLL.Sys
 		}
 		
 		public virtual List<SysUserModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
-        {
+		{
 			return new List<SysUserModel>();
 		}
 
-        public virtual List<SysUserModel> CreateModelList(ref IQueryable<SysUser> queryData)
-        {
+		public virtual List<SysUserModel> CreateModelList(ref IQueryable<SysUser> queryData)
+		{
 
-            List<SysUserModel> modelList = (from r in queryData
-                                              select new SysUserModel
-                                              {
+			List<SysUserModel> modelList = (from r in queryData
+											  select new SysUserModel
+											  {
 													Id = r.Id,
 													UserName = r.UserName,
 													Password = r.Password,
@@ -145,24 +145,24 @@ namespace Apps.BLL.Sys
 													IsSelLead = r.IsSelLead,
 													IsReportCalendar = r.IsReportCalendar,
 													IsSecretary = r.IsSecretary,
-          
-                                              }).ToList();
+		  
+											  }).ToList();
 
-            return modelList;
-        }
+			return modelList;
+		}
 
-        public virtual bool Create(ref ValidationErrors errors, SysUserModel model)
-        {
-            try
-            {
-                SysUser entity = m_Rep.GetById(model.Id);
-                if (entity != null)
-                {
-                    errors.Add(Resource.PrimaryRepeat);
-                    return false;
-                }
-                entity = new SysUser();
-               				entity.Id = model.Id;
+		public virtual bool Create(ref ValidationErrors errors, SysUserModel model)
+		{
+			try
+			{
+				SysUser entity = m_Rep.GetById(model.Id);
+				if (entity != null)
+				{
+					errors.Add(Resource.PrimaryRepeat);
+					return false;
+				}
+				entity = new SysUser();
+							entity.Id = model.Id;
 				entity.UserName = model.UserName;
 				entity.Password = model.Password;
 				entity.TrueName = model.TrueName;
@@ -202,91 +202,91 @@ namespace Apps.BLL.Sys
 				entity.IsSecretary = model.IsSecretary;
   
 
-                if (m_Rep.Create(entity))
-                {
-                    return true;
-                }
-                else
-                {
-                    errors.Add(Resource.InsertFail);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
-        }
+				if (m_Rep.Create(entity))
+				{
+					return true;
+				}
+				else
+				{
+					errors.Add(Resource.InsertFail);
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				ExceptionHander.WriteException(ex);
+				return false;
+			}
+		}
 
 
 
-         public virtual bool Delete(ref ValidationErrors errors, object id)
-        {
-            try
-            {
-                if (m_Rep.Delete(id) == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
-        }
+		 public virtual bool Delete(ref ValidationErrors errors, object id)
+		{
+			try
+			{
+				if (m_Rep.Delete(id) == 1)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				ExceptionHander.WriteException(ex);
+				return false;
+			}
+		}
 
-        public virtual bool Delete(ref ValidationErrors errors, object[] deleteCollection)
-        {
-            try
-            {
-                if (deleteCollection != null)
-                {
-                    using (TransactionScope transactionScope = new TransactionScope())
-                    {
-                        if (m_Rep.Delete(deleteCollection) == deleteCollection.Length)
-                        {
-                            transactionScope.Complete();
-                            return true;
-                        }
-                        else
-                        {
-                            Transaction.Current.Rollback();
-                            return false;
-                        }
-                    }
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
-        }
+		public virtual bool Delete(ref ValidationErrors errors, object[] deleteCollection)
+		{
+			try
+			{
+				if (deleteCollection != null)
+				{
+					using (TransactionScope transactionScope = new TransactionScope())
+					{
+						if (m_Rep.Delete(deleteCollection) == deleteCollection.Length)
+						{
+							transactionScope.Complete();
+							return true;
+						}
+						else
+						{
+							Transaction.Current.Rollback();
+							return false;
+						}
+					}
+				}
+				return false;
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				ExceptionHander.WriteException(ex);
+				return false;
+			}
+		}
 
 		
-       
+	   
 
-        public virtual bool Edit(ref ValidationErrors errors, SysUserModel model)
-        {
-            try
-            {
-                SysUser entity = m_Rep.GetById(model.Id);
-                if (entity == null)
-                {
-                    errors.Add(Resource.Disable);
-                    return false;
-                }
-                              				entity.Id = model.Id;
+		public virtual bool Edit(ref ValidationErrors errors, SysUserModel model)
+		{
+			try
+			{
+				SysUser entity = m_Rep.GetById(model.Id);
+				if (entity == null)
+				{
+					errors.Add(Resource.Disable);
+					return false;
+				}
+											entity.Id = model.Id;
 				entity.UserName = model.UserName;
 				entity.Password = model.Password;
 				entity.TrueName = model.TrueName;
@@ -327,34 +327,34 @@ namespace Apps.BLL.Sys
  
 
 
-                if (m_Rep.Edit(entity))
-                {
-                    return true;
-                }
-                else
-                {
-                    errors.Add(Resource.NoDataChange);
-                    return false;
-                }
+				if (m_Rep.Edit(entity))
+				{
+					return true;
+				}
+				else
+				{
+					errors.Add(Resource.NoDataChange);
+					return false;
+				}
 
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
-        }
+			}
+			catch (Exception ex)
+			{
+				errors.Add(ex.Message);
+				ExceptionHander.WriteException(ex);
+				return false;
+			}
+		}
 
-      
+	  
 
-        public virtual SysUserModel GetById(object id)
-        {
-            if (IsExists(id))
-            {
-                SysUser entity = m_Rep.GetById(id);
-                SysUserModel model = new SysUserModel();
-                              				model.Id = entity.Id;
+		public virtual SysUserModel GetById(object id)
+		{
+			if (IsExists(id))
+			{
+				SysUser entity = m_Rep.GetById(id);
+				SysUserModel model = new SysUserModel();
+											model.Id = entity.Id;
 				model.UserName = entity.UserName;
 				model.Password = entity.Password;
 				model.TrueName = entity.TrueName;
@@ -393,34 +393,34 @@ namespace Apps.BLL.Sys
 				model.IsReportCalendar = entity.IsReportCalendar;
 				model.IsSecretary = entity.IsSecretary;
  
-                return model;
-            }
-            else
-            {
-                return null;
-            }
-        }
+				return model;
+			}
+			else
+			{
+				return null;
+			}
+		}
 
 
 		 /// <summary>
-        /// 校验Excel数据,这个方法一般用于重写校验逻辑
-        /// </summary>
-        public virtual bool CheckImportData(string fileName, List<SysUserModel> list,ref ValidationErrors errors )
-        {
-          
-            var targetFile = new FileInfo(fileName);
+		/// 校验Excel数据,这个方法一般用于重写校验逻辑
+		/// </summary>
+		public virtual bool CheckImportData(string fileName, List<SysUserModel> list,ref ValidationErrors errors )
+		{
+		  
+			var targetFile = new FileInfo(fileName);
 
-            if (!targetFile.Exists)
-            {
+			if (!targetFile.Exists)
+			{
 
-                errors.Add("导入的数据文件不存在");
-                return false;
-            }
+				errors.Add("导入的数据文件不存在");
+				return false;
+			}
 
-            var excelFile = new ExcelQueryFactory(fileName);
+			var excelFile = new ExcelQueryFactory(fileName);
 
-            //对应列头
-			 				 excelFile.AddMapping<SysUserModel>(x => x.UserName, "UserName");
+			//对应列头
+							 excelFile.AddMapping<SysUserModel>(x => x.UserName, "UserName");
 				 excelFile.AddMapping<SysUserModel>(x => x.Password, "Password");
 				 excelFile.AddMapping<SysUserModel>(x => x.TrueName, "TrueName");
 				 excelFile.AddMapping<SysUserModel>(x => x.Card, "Card");
@@ -458,15 +458,15 @@ namespace Apps.BLL.Sys
 				 excelFile.AddMapping<SysUserModel>(x => x.IsReportCalendar, "IsReportCalendar");
 				 excelFile.AddMapping<SysUserModel>(x => x.IsSecretary, "IsSecretary");
  
-            //SheetName
-            var excelContent = excelFile.Worksheet<SysUserModel>(0);
-            int rowIndex = 1;
-            //检查数据正确性
-            foreach (var row in excelContent)
-            {
-                var errorMessage = new StringBuilder();
-                var entity = new SysUserModel();
-						 				  entity.Id = row.Id;
+			//SheetName
+			var excelContent = excelFile.Worksheet<SysUserModel>(0);
+			int rowIndex = 1;
+			//检查数据正确性
+			foreach (var row in excelContent)
+			{
+				var errorMessage = new StringBuilder();
+				var entity = new SysUserModel();
+										  entity.Id = row.Id;
 				  entity.UserName = row.UserName;
 				  entity.Password = row.Password;
 				  entity.TrueName = row.TrueName;
@@ -505,38 +505,38 @@ namespace Apps.BLL.Sys
 				  entity.IsReportCalendar = row.IsReportCalendar;
 				  entity.IsSecretary = row.IsSecretary;
  
-                //=============================================================================
-                if (errorMessage.Length > 0)
-                {
-                    errors.Add(string.Format(
-                        "第 {0} 列发现错误：{1}{2}",
-                        rowIndex,
-                        errorMessage,
-                        "<br/>"));
-                }
-                list.Add(entity);
-                rowIndex += 1;
-            }
-            if (errors.Count > 0)
-            {
-                return false;
-            }
-            return true;
-        }
+				//=============================================================================
+				if (errorMessage.Length > 0)
+				{
+					errors.Add(string.Format(
+						"第 {0} 列发现错误：{1}{2}",
+						rowIndex,
+						errorMessage,
+						"<br/>"));
+				}
+				list.Add(entity);
+				rowIndex += 1;
+			}
+			if (errors.Count > 0)
+			{
+				return false;
+			}
+			return true;
+		}
 
-        /// <summary>
-        /// 保存数据
-        /// </summary>
-        public virtual void SaveImportData(IEnumerable<SysUserModel> list)
-        {
-            try
-            {
-                using (DBContainer db = new DBContainer())
-                {
-                    foreach (var model in list)
-                    {
-                        SysUser entity = new SysUser();
-                       						entity.Id = ResultHelper.NewId;
+		/// <summary>
+		/// 保存数据
+		/// </summary>
+		public virtual void SaveImportData(IEnumerable<SysUserModel> list)
+		{
+			try
+			{
+				using (DBContainer db = new DBContainer())
+				{
+					foreach (var model in list)
+					{
+						SysUser entity = new SysUser();
+											entity.Id = ResultHelper.NewId;
 						entity.UserName = model.UserName;
 						entity.Password = model.Password;
 						entity.TrueName = model.TrueName;
@@ -575,30 +575,30 @@ namespace Apps.BLL.Sys
 						entity.IsReportCalendar = model.IsReportCalendar;
 						entity.IsSecretary = model.IsSecretary;
  
-                        db.SysUser.Add(entity);
-                    }
-                    db.SaveChanges();
-                }
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }
-        }
+						db.SysUser.Add(entity);
+					}
+					db.SaveChanges();
+				}
+			}
+			catch(Exception ex)
+			{
+				throw;
+			}
+		}
 		public virtual bool Check(ref ValidationErrors errors, object id,int flag)
-        {
+		{
 			return true;
 		}
 
-        public virtual bool IsExists(object id)
-        {
-            return m_Rep.IsExist(id);
-        }
+		public virtual bool IsExists(object id)
+		{
+			return m_Rep.IsExist(id);
+		}
 		
 		public void Dispose()
-        { 
-            
-        }
+		{ 
+			
+		}
 
 	}
 }

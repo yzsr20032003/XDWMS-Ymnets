@@ -8,104 +8,67 @@
 	Layout = "~/Views/Shared/_Index_Layout.cshtml";
 	List<permModel> perm = null;
 }
-<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
-<form name = "form1" method="post" id="form1">
-	<table>
-		<tr>
-			<th style="padding:20px;"> Excel：</th>
-			<td style="padding:20px;">
-				<input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
-				<a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
-				<input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
-				<span class="uploading">@Resource.Uploading</span>
-			</td>
-		</tr>
-	</table>
-	<div class="endbtndiv">
-		<a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
-		<a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
-	</div>
-</form>
+<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+	<form name="form1" method="post" id="form1">
+		<table>
+			<tr>
+				<th style="padding:20px;"> Excel：</th>
+				<td style="padding:20px;">
+					<input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+					<a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+					<input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+					<span class="uploading">@Resource.Uploading</span>
+				</td>
+			</tr>
+		</table>
+		<div class="endbtndiv">
+			<a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+			<a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+		</div>
+	</form>
 </div>
-<table style="width:100%">
-<tbody>
+<div class="mvctool">
+	<input id="txtQuery" type="text" class="searchText" />
+	@Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+	@Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+	@Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+	@Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+	@Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
+	@Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
+</div>
+				
+
+<div id=" modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<table>
 	<tr>
-		<td style="width:330px;vertical-align: top">
-			 <div class="mvctool">
-				 @Html.ToolButton("btnQueryParent", "fa fa-search", Resource.Query,ref perm, "Query", true)
-				 @Html.ToolButton("btnCreateParent", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-				 @Html.ToolButton("btnEditParent", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-				 @Html.ToolButton("btnDeleteParent", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
-			 </div>
-			<table id="ListParent"></table>
-		</td>        <td style="width:3px;"></td>
+		<td style="vertical-align: top; width: 210px;padding-top:3px">
+			<div id="p" class="easyui-panel" title="设备位置" style="width:205px;padding:10px;">
+				@Html.Raw(ViewBag.GetDeviceAreaTree)
+			</div>
+
+		</td>
+		<td style="width:3px;">&nbsp;</td>
+		<td style="padding: 3px">
 		<td style="vertical-align:top">
-			 <div class="mvctool">
-				 <input id="txtQuery" type="text" class="searchText" />
-				 @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-				 @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-				 @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-				 @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
-				 @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
-				 @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
-			 </div>
-			<table id="List"></table>
+			<table id="ListParent"></table>
 		</td>
 	</tr>
-</tbody>
 </table>
 
-<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
-
-
-<table>
-    <tr>
-        <td style="vertical-align: top; width: 210px;padding-top:3px">
-            <div id="p" class="easyui-panel" title="设备区域" style="width:205px;padding:10px;">
-                @Html.Raw(ViewBag.StructTree)
-            </div>
-        </td>
-        <td style="width:3px;">&nbsp;</td>
-        <td style="padding: 3px">
-            <table id="List"></table>
-        </td>
-    </tr>
-</table>
-
-
+<div id=" Pager"></div>
 <script type="text/javascript">
-	$(function () {
-		$('#ListParent').datagrid({
-			url: '@Url.Action("GetListParent")',
-			width:430,
-			methord: 'post',
-			height: SetGridHeightSub(45),
-			fitColumns: true,
-			sortName: 'CreateTime',
-			sortOrder: 'desc',
-			idField: 'Id',
-			pageSize: 15,
-			pageList: [15, 20, 30, 40, 50],
-			pagination: true,
-			striped: true, //奇偶行是否区分
-			singleSelect: true,//单选模式
-			//rownumbers: true,//行号
-			onLoadSuccess: function(data) {            },
-			columns: [[
-				{ field: 'Id', title: '主键ID', width: 80,hidden:true },
-				{ field: 'ParentId', title: '区域父ID', width: 80,sortable:true },
-				{ field: 'Name', title: '区域名称', width: 80,sortable:true },
-				{ field: 'CreateTime', title: 'CreateTime', width: 80,sortable:true }
-			]]
-		 ,onClickRow: function(index, row) {
-			 $('#List').datagrid("load", { ParentId: row.Id });
-}
-		}).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
-		 $(window).resize(function() {
-			 resizeLayout();
-		 });
+
+	function getSelected() {
+		var node = $('#GetDeviceAreaTree').tree('getSelected');
+		if (node) {
+			var id = node.attributes.id;
+			$('#List').datagrid("load", { AreaId: id });
+			
+		}
+	}
+	$(function () {		
 		$('#List').datagrid({
-			url: '@Url.Action("GetList")?parentId=0',
+			url: '@Url.Action("GetList")?AreaId=0',
 			width:SetGridWidthSub(450),
 			methord: 'post',
 			height: SetGridHeightSub(45),
@@ -119,26 +82,29 @@
 			striped: true, //奇偶行是否区分
 			singleSelect: true,//单选模式
 			//rownumbers: true,//行号
-			onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
+			onLoadSuccess: function (data) {
+			    $(".datagrid-row td div").addClass("exceed");
 			},
 			columns: [[
 				{ field: 'Id', title: '主键ID', width: 80,hidden:true },
-				{ field: 'DeviceAreaName', title: '区域名称', width: 80},
+				{ field: 'AreaId', title: '区域ID', width: 80,sortable:true },
 				{ field: 'ParentID', title: '父级ID', width: 80,sortable:true },
 				{ field: 'Code', title: '设备编码', width: 80,sortable:true },
 				{ field: 'Name', title: '设备名称', width: 80,sortable:true },
 				{ field: 'Marking', title: '设备型号', width: 80,sortable:true },
 				{ field: 'OEM', title: '生产厂家', width: 80,sortable:true },
-				{ field: 'DeviceTypeName', title: '设备类型', width: 80},
-				{ field: 'DeviceStateName', title: '设备状态', width: 80},
+				{ field: 'Type', title: '设备类型', width: 80,sortable:true },
+				{ field: 'State', title: '设备状态', width: 80,sortable:true },
 				{ field: 'Remark', title: '备注', width: 80,sortable:true },
-				{ field: 'locking', title: 'locking', width: 40,sortable:true,align:'center', formatter: function (value) {return EnableFormatter(value)}},
-				{ field: 'CreateUser', title: 'CreateUser', width: 80,sortable:true },
-				{ field: 'CreateTime', title: 'CreateTime', width: 80,sortable:true },
-				
+				{ field: 'locking', title: '锁定', width: 40,sortable:true,align:'center', formatter: function (value) {return EnableFormatter(value)}},
+				{ field: 'CreateUser', title: '创建人', width: 80,sortable:true },
+				{ field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
+				{ field: 'DeviceAreaName', title: '类别名称', width: 80 }
 			]]
 		});
 	});
+	</script>
+<script type="text/javascript">
 	//ifram 返回
 	function frameReturnByClose() {
 		$("#modalwindow").window('close');
@@ -146,11 +112,11 @@
 	function frameReturnByReload(flag) {
 		if (flag)
 		{
-			$("#List,#ListParent").datagrid('load');
+			$("#List").datagrid('load');
 		}
 		else
 		{
-			$("#List,#ListParent").datagrid('reload');
+			$("#List").datagrid('reload');
 		}
 	}
 	function frameReturnByMes(mes) {
@@ -256,4 +222,3 @@
 		 },100);
 		}
 </script>
-

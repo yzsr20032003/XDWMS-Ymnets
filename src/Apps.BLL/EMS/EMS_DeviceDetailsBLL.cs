@@ -38,6 +38,9 @@ namespace Apps.BLL.EMS
                                    || a.OEM.Contains(queryStr)
                                    || a.Remark.Contains(queryStr)
                                    || a.CreateUser.Contains(queryStr)
+                                   ||a.EMS_DeviceArea.Name.Contains(queryStr)
+                                   ||a.EMS_DeviceState.Name.Contains(queryStr)
+                                   ||a.EMS_DeviceType.Name.Contains(queryStr)
                                  )
                             );
             }

@@ -1,4 +1,5 @@
-﻿@using Apps.Web.Core;
+﻿
+@using Apps.Web.Core;
 @using Apps.Web;
 @using Apps.Common;
 @using Apps.Models.Sys;
@@ -36,9 +37,7 @@
 	@Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
 	@Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
 </div>
-				
-
-<div id=" modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <table>
 	<tr>
 		<td style="vertical-align: top; width: 210px;padding-top:3px">
@@ -50,26 +49,27 @@
 		<td style="width:3px;">&nbsp;</td>
 		<td style="padding: 3px">
 		<td style="vertical-align:top">
-			<table id="ListParent"></table>
+			<table id="List"></table>
 		</td>
 	</tr>
 </table>
 
-<div id=" Pager"></div>
+<div id="Pager"></div>
 <script type="text/javascript">
 
 	function getSelected() {
-		var node = $('#GetDeviceAreaTree').tree('getSelected');
+		var node = $('#DeviceAreaTree').tree('getSelected');
 		if (node) {
 			var id = node.attributes.id;
 			$('#List').datagrid("load", { AreaId: id });
-			
+
 		}
 	}
-	$(function () {		
+
+	$(function () {
 		$('#List').datagrid({
 			url: '@Url.Action("GetList")?AreaId=0',
-			width:SetGridWidthSub(450),
+			width: SetGridWidthSub(10),
 			methord: 'post',
 			height: SetGridHeightSub(45),
 			fitColumns: true,
@@ -82,42 +82,37 @@
 			striped: true, //奇偶行是否区分
 			singleSelect: true,//单选模式
 			//rownumbers: true,//行号
-			onLoadSuccess: function (data) {
-			    $(".datagrid-row td div").addClass("exceed");
+			onLoadSuccess: function (data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
 			},
 			columns: [[
-				{ field: 'Id', title: '主键ID', width: 80,hidden:true },
-				{ field: 'AreaId', title: '区域ID', width: 80,sortable:true },
-				{ field: 'ParentID', title: '父级ID', width: 80,sortable:true },
-				{ field: 'Code', title: '设备编码', width: 80,sortable:true },
-				{ field: 'Name', title: '设备名称', width: 80,sortable:true },
-				{ field: 'Marking', title: '设备型号', width: 80,sortable:true },
-				{ field: 'OEM', title: '生产厂家', width: 80,sortable:true },
-				{ field: 'Type', title: '设备类型', width: 80,sortable:true },
-				{ field: 'State', title: '设备状态', width: 80,sortable:true },
-				{ field: 'Remark', title: '备注', width: 80,sortable:true },
-				{ field: 'locking', title: '锁定', width: 40,sortable:true,align:'center', formatter: function (value) {return EnableFormatter(value)}},
-				{ field: 'CreateUser', title: '创建人', width: 80,sortable:true },
-				{ field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
-				{ field: 'DeviceAreaName', title: '类别名称', width: 80 }
+				{ field: 'Id', title: '主键ID', width: 80, hidden: true },
+				{ field: 'DeviceAreaName', title: '区域名称', width: 80, sortable: true },
+				{ field: 'ParentID', title: '父级ID', width: 80, sortable: true },
+				{ field: 'Code', title: '设备编码', width: 80, sortable: true },
+				{ field: 'Name', title: '设备名称', width: 80, sortable: true },
+				{ field: 'Marking', title: '设备型号', width: 80, sortable: true },
+				{ field: 'OEM', title: '生产厂家', width: 80, sortable: true },
+				{ field: 'DeviceTypeName', title: '设备类型', width: 80, sortable: true },
+				{ field: 'DeviceStateName', title: '设备状态', width: 80, sortable: true },
+				{ field: 'Remark', title: '备注', width: 80, sortable: true },
+				{ field: 'locking', title: 'locking', width: 40, sortable: true, align: 'center', formatter: function (value) { return EnableFormatter(value) } },
+				{ field: 'CreateUser', title: 'CreateUser', width: 80, sortable: true },
+				{ field: 'CreateTime', title: 'CreateTime', width: 80, hidden: true }
 			]]
 		});
 	});
 	</script>
-<script type="text/javascript">
+@*operation*@
+<script tpye="text/javascript">
 	//ifram 返回
 	function frameReturnByClose() {
 		$("#modalwindow").window('close');
 	}
 	function frameReturnByReload(flag) {
 		if (flag)
-		{
 			$("#List").datagrid('load');
-		}
 		else
-		{
 			$("#List").datagrid('reload');
-		}
 	}
 	function frameReturnByMes(mes) {
 		$.messageBox5s(Lang.Tip, mes);
@@ -137,7 +132,7 @@
 			if (row != null) {
 				$.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
 			} else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
-			});
+		});
 		$("#btnQuery").click(function () {
 			var queryStr = $("#txtQuery").val();
 			if (queryStr == null) {
@@ -147,78 +142,34 @@
 
 		});
 		$("#btnDelete").click(function () {
-				dataDelete("@Url.Action("Delete")", "List");
-			});
-		$("#btnImport").click(function() {
-			 $("#txtExcelPath").val("");
-			 $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');
+			dataDelete("@Url.Action("Delete")", "List");
 		});
-		$("#btnExport").click(function() {
-		  $.post("@Url.Action("CheckExportData")", function(data) {
-				if (data.type == 1)
-				{
+		$("#btnImport").click(function () {
+			$("#txtExcelPath").val("");
+			$("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');
+		});
+		$("#btnExport").click(function () {
+			$.post("@Url.Action("CheckExportData")", function (data) {
+				if (data.type == 1) {
 					window.location = "@Url.Action("Export")";
 				}
-				else
-				{
-				$.messageBox5s(Lang.Tip, data.message);
+				else {
+					$.messageBox5s(Lang.Tip, data.message);
 				}
 			}, "json");
 		});
-		$("#btnCreateParent").click(function () {
-			$.modalWindow(Lang.Create, '@Url.Action("CreateParent")', 700, 400, 'fa fa-plus');
-		});
-		$("#btnEditParent").click(function () {
-			var row = $('#ListParent').datagrid('getSelected');
-			if (row != null) {
-				$.modalWindow(Lang.Edit, '@Url.Action("EditParent")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
-			} else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
-		});
-		$("#btnDetailsParent").click(function () {
-			var row = $('#List').datagrid('getSelected');
-			if (row != null) {
-				$.modalWindow(Lang.Details, '@Url.Action("DetailsParent")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
-			} else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
-			});
-		$("#btnQueryParent").click(function () {
-			var queryStr = $("#txtQueryParent").val();
-			if (queryStr == null) {
-				queryStr = "%";
-			}
-			$("#ListParent").datagrid("load", { queryStr: queryStr });
-
-		});
-		$("#btnDeleteParent").click(function () {
-			   dataDelete("@Url.Action("Delete")", "ListParent");
-		   });
 	});
-	function ImportData()
-	{
+	function ImportData() {
 		showLoading();
-		var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
-		$.post(url, function(data) {
-			if (data.type == 1)
-			{
-			 $("#List").datagrid('load');
-			 $('#uploadExcel').window('close');
-			 $('#FileUpload').val('');
+		var url = "@Url.Action("Import")?filePath=" + $("#txtExcelPath").val();
+		$.post(url, function (data) {
+			if (data.type == 1) {
+				$("#List").datagrid('load');
+				$('#uploadExcel').window('close');
+				$('#FileUpload').val('');
 			}
 			hideLoading();
 			$.messageBox5s('提示', data.message);
 		}, "json");
 	}
-	function resizeLayout()
-	 {
-		 setTimeout(function () {
-			 $('#ListParent').datagrid('resize', {
-			 }).datagrid('resize', {
-				 height: SetGridHeightSub(45)
-			 });
-			 $('#List').datagrid('resize', {
-			 }).datagrid('resize', {
-				 width: $(window).width() - 450,
-				 height: SetGridHeightSub(45)
-			 });
-		 },100);
-		}
 </script>

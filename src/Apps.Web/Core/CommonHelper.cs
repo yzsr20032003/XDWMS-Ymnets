@@ -204,7 +204,7 @@ namespace Apps.Web.Core
                 List<EMS_DeviceArea> queryData = structRep.GetList().ToList();
                 List<EMS_DeviceArea> query = queryData.Where(a => a.ParentId == "0").OrderBy(a => a.CreateTime).ToList();
                 string str = "";
-                sb.Append("<ul id=\"StructTree\" class=\"easyui-tree\"  data-options=\"onClick:function(node){ getSelected();}\">");
+                sb.Append("<ul id=\"DeviceAreaTree\" class=\"easyui-tree\"  data-options=\"onClick:function(node){ getSelected();}\">");
                 foreach (var l in query)
                 {
                     str = GetDeviceAreaLayout(queryData, l.Id, isCount);

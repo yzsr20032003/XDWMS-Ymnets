@@ -115,7 +115,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.Type)：
             </th>
             <td >
-                @Html.EditorFor(model => model.Type)
+                @Html.DropDownListFor(model => model.Type, ViewBag.DeviceType as SelectList)
             </td>
             <td>@Html.ValidationMessageFor(model => model.Type)</td>
         </tr>
@@ -124,7 +124,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.State)：
             </th>
             <td >
-                @Html.EditorFor(model => model.State)
+                @Html.DropDownListFor(model => model.State, ViewBag.DeviceState as SelectList)
             </td>
             <td>@Html.ValidationMessageFor(model => model.State)</td>
         </tr>

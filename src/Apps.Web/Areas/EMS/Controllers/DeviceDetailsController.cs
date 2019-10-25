@@ -90,6 +90,8 @@ namespace Apps.Web.Areas.EMS.Controllers
         {
             EMS_DeviceDetailsModel entity = m_BLL.GetById(id);
             ViewBag.DeviceArea = new SelectList(m_DeviceAreaBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name", entity.AreaId);
+            ViewBag.DeviceState = new SelectList(m_DeviceStateBll.GetList(ref setNoPagerAscById, ""), "Id", "Name",entity.State);
+            ViewBag.DeviceType = new SelectList(m_DeviceTypeBll.GetList(ref setNoPagerAscById, ""), "Id", "Name");
             return View(entity);
         }
 
